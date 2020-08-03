@@ -1,0 +1,16 @@
+@import model.GithubUserModel
+@(githubModel : GithubUserModel)
+
+@main("Welcome to Play") {
+  <h1>Welcome to Play!</h1>
+
+    @githubModel.username<p>
+    @githubModel.userInfo.name<p>
+    @githubModel.userInfo.email<p>
+    @githubModel.userInfo.location<p>
+
+    @githubModel.usersRepoModel.allRepoData.zip(githubModel.usersRepoModel.commitNs).map{case (a,b) => <p>@{a.name} - @b.toString commit@{ if (b == 1) { "" }  else{ "s" } } }
+ }
+
+
+

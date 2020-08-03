@@ -1,0 +1,9 @@
+@(username : String, repoData : List[String])
+
+@main("Welcome to Play2") {
+<h1>Welcome to Play!</h1>
+<p> hello @username this is test</p>
+@repoData.map{ data =>
+<p>@data
+    }
+}
