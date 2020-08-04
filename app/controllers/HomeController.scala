@@ -26,26 +26,18 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, h
    * will be called when the application receives a `GET` request with
    * a path of `/`.
    */
-  def index(username: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    homeService.getData(username).map { data =>
-      Ok(views.html.index(data))
-    }
-  }
 
   def formPage(): Action[AnyContent] = Action {implicit request: Request[AnyContent] =>
     Ok(views.html.formPage())
   }
 
-  def validate(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+  def index(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     val username  = request.body.asFormUrlEncoded.map{ args =>
       args("username").head
     }.getOrElse(Redirect(routes.HomeController.formPage())).toString
-    if(username.length > 0) {
-      Redirect(routes.HomeController.index(username))
-    }
-    else{
-      Redirect(routes.HomeController.formPage())
-    }
+        homeService.getData(username).map {data =>
+          Ok(views.html.index(data))
+        }
   }
 
 

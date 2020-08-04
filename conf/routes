@@ -5,9 +5,8 @@
 
 # An example controller showing a sample home page
 
-GET      /github/users/                           controllers.HomeController.formPage()
-POST     /github/users/                           controllers.HomeController.validate()
-GET      /github/users/:username/                 controllers.HomeController.index(username)
+GET      /github/users                           controllers.HomeController.formPage()
+POST     /github/users                           controllers.HomeController.index()
 
 
 
