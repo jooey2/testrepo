@@ -17,6 +17,7 @@ class GithubConnector  @Inject() (ws : WSClient){
   def getUsersInfo(username : String)(implicit ec : ExecutionContext): Future [UserInfoModel] = {
     ws.url(s"https://api.github.com/users/$username").addHttpHeaders(("Authorization", "Basic NDY3ZmNiYzU2ZGVlNDExYTlkNTJkZGYxOGJkMDhlYWJiZDgxNWYxOA=="))
       .get.map{_.json.as[UserInfoModel]}
+
   }
 
   def getContributors(url : String)(implicit ec : ExecutionContext) : Future[List[Contributor]] = {
