@@ -1,0 +1,8 @@
+@()(implicit request: RequestHeader)
+@main("Navigation") {
+<form method = "post" action = "@helper.CSRF(routes.HomeController.validate())">
+Username: <input type = "text" name = "username">
+    <br>
+    <input type="submit"/>
+</form>
+}

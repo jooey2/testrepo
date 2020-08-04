@@ -1,11 +1,16 @@
 package controllers
 
 import javax.inject._
+import model.GithubUserModel
 import play.api._
 import play.api.mvc._
 import service.HomeService
 import model.UsersRepoModel._
+
 import scala.concurrent.{ExecutionContext, Future}
+import play.api.data._
+import play.api.data.Form._
+import play.api.data.Forms._
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -26,6 +31,26 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, h
       Ok(views.html.index(data))
     }
   }
+
+  def formPage(): Action[AnyContent] = Action {implicit request: Request[AnyContent] =>
+    Ok(views.html.formPage())
+  }
+
+  def validate(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    val username  = request.body.asFormUrlEncoded.map{ args =>
+      args("username").head
+    }.getOrElse(Redirect(routes.HomeController.formPage())).toString
+    if(username.length > 0) {
+      Redirect(routes.HomeController.index(username))
+    }
+    else{
+      Redirect(routes.HomeController.formPage())
+    }
+  }
+
+
+
+
 }
 
 

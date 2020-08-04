@@ -15,24 +15,19 @@ class HomeService @Inject()(githubConnector: GithubConnector){
       }
 
   def getRepo (username : String) (implicit ec : ExecutionContext): Future[UsersRepoModel]= {
-    val  allRepoData = githubConnector.getUsersRepo(username)
     for{
-      repoData <- allRepoData
-      commitN <- allRepoData.map{ard =>
-        Future.sequence(ard.map{x =>
-          getCommitN(x)
-        })
-        }
-      c<-commitN
-
+      allRepoData <- githubConnector.getUsersRepo(username)
+      commitN <- getCommitN(allRepoData)
     }
-      yield UsersRepoModel(repoData,c)
+      yield UsersRepoModel(allRepoData,commitN)
   }
 
-  def getCommitN (repoData: RepoData)(implicit ec : ExecutionContext): Future[Int] ={
-    githubConnector.getContributors(repoData.contributors_url).map{
-      _.foldRight(0)((a,b) => a.contributions+b)
-    }
+  def getCommitN (allRepoData: List[RepoData])(implicit ec : ExecutionContext): Future[List[Int]] ={
+    Future.sequence(allRepoData.map {repoData =>
+      githubConnector.getContributors(repoData.contributors_url).map {
+        _.foldRight(0)((a, b) => a.contributions + b)
+      }
+    })
   }
 
   def getInfo(username : String) (implicit ec : ExecutionContext) : Future [UserInfoModel] ={

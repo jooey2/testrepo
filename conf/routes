@@ -4,7 +4,11 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /github/users/:username                           controllers.HomeController.index(username : String)
+
+GET      /github/users/                           controllers.HomeController.formPage()
+POST     /github/users/                           controllers.HomeController.validate()
+GET      /github/users/:username/                 controllers.HomeController.index(username)
+
 
 
 # Map static resources from the /public folder to the /assets URL path
