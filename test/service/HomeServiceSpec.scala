@@ -49,6 +49,7 @@ class HomeServiceSpec extends PlaySpec with GuiceOneAppPerTest with MockitoSugar
       val connector = new stubGithubConnector(ard,uim,contributors)(mock[WSClient])
       val service = new HomeService(connector)
       val data = service.getData("joey")(ec)
+      List(1).map(_ equals 2)
       data.map(_.username mustBe "joey")(ec)
       data.map(_.userInfo.fullName mustBe "JoeyC")(ec)
       data.map(_.userInfo.location mustBe "Telford")(ec)
