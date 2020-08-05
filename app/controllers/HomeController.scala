@@ -39,10 +39,6 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, h
           Ok(views.html.index(data))
         }
   }
-
-
-
-
 }
 
 
