@@ -17,7 +17,7 @@ import play.api.data.Forms._
  * application's home page.
  */
 
-class NoSuchRepoException extends Exception
+object NoSuchRepoException extends Exception
 
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents, homeService : HomeService)(implicit val ec : ExecutionContext) extends BaseController {
@@ -49,16 +49,16 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, h
     }
   }
 
-  def repoDir(username : String, repoName: String):Action [AnyContent] = Action.async { implicit  request: Request[AnyContent]=>
-    homeService.getRepo(username,repoName).map{
-      case Some(x) => Ok(views.html.repoDir(x))
-      case None => throw new NoSuchRepoException
+  def repoDir(username : String, repoName: String):Action [AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    val repoData = homeService.getRepo(username, repoName).map {
+      case Some(value) => value
+      case None => throw NoSuchRepoException
     }
+    for {
+      rd <- repoData
+      repoContent <- homeService.getRepoContent(rd)
+    } yield Ok(views.html.repoDir(rd, repoContent))
   }
-
-
-
-
 }
 
 

@@ -1,7 +1,7 @@
 package connector
 
 import com.google.inject.Inject
-import model.{Contributor, RepoData, UserInfoModel}
+import model.{Contributor, RepoData, UserInfoModel,RepoContent}
 import play.api.libs.ws.WSClient
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -25,5 +25,9 @@ ws.url(url).addHttpHeaders(("Authorization", "Basic ZDZmODg4MmM4YjRlMjc5MjAyM2Zi
     .get.map{_.json.as[List[Contributor]]}
   }
 
+  def getRepoContent(url : String)(implicit ec : ExecutionContext) : Future[List[RepoContent]] = {
+    ws.url(url).addHttpHeaders(("Authorization", "Basic ZDZmODg4MmM4YjRlMjc5MjAyM2ZiYmNkNjA1Y2Y5ZTYxYjI5MjIxNA=="))
+      .get.map{_.json.as[List[RepoContent]]}
+  }
 
 }

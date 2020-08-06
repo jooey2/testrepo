@@ -4,7 +4,7 @@ package model
 import play.api.libs.json.{Format, Json}
 
 
-case class UserInfoModel(fullName : String, location : String, email : String){
+case class UserInfoModel(name : String, location : String, email : String){
 }
 
 object UserInfoModel{

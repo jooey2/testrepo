@@ -1,7 +1,7 @@
-@import model.RepoData
-@(repoData : RepoData)
+@import model.{RepoData,RepoContent}
+@(repoData : RepoData, repoContent : List[RepoContent])
 
 @main("Welcome to Play") {
-<h1>Welcome to RepoDir!</h1>
+<h1>@repoData.name</h1>
 
 }

@@ -16,7 +16,7 @@ class HomeService @Inject()(githubConnector: GithubConnector){
         } yield GithubUserModel(username, allRepoData,info)
       }
 
-  def getUsersRepo (username : String) (implicit ec : ExecutionContext): Future[UsersRepoModel]= {
+  private def getUsersRepo (username : String) (implicit ec : ExecutionContext): Future[UsersRepoModel]= {
     for{
       allRepoData <- githubConnector.getUsersRepo(username)
       commitN <- getCommitN(allRepoData)
@@ -25,7 +25,7 @@ class HomeService @Inject()(githubConnector: GithubConnector){
   }
 
 
-  def getCommitN (allRepoData: List[RepoData])(implicit ec : ExecutionContext): Future[List[Int]] ={
+  private def getCommitN (allRepoData: List[RepoData])(implicit ec : ExecutionContext): Future[List[Int]] ={
     Future.sequence(allRepoData.map {repoData =>
       githubConnector.getContributors(repoData.contributors_url).map {
         _.foldRight(0)((a, b) => a.contributions + b)
@@ -33,7 +33,7 @@ class HomeService @Inject()(githubConnector: GithubConnector){
     })
   }
 
-  def getInfo(username : String) (implicit ec : ExecutionContext) : Future [UserInfoModel] ={
+  private def getInfo(username : String) (implicit ec : ExecutionContext) : Future [UserInfoModel] ={
     githubConnector.getUsersInfo(username)
   }
 
@@ -43,5 +43,11 @@ class HomeService @Inject()(githubConnector: GithubConnector){
       userRepoData.find(_.name == repoName)
     }
   }
+
+  def getRepoContent(repoData : RepoData)(implicit ec : ExecutionContext) : Future[List[RepoContent]] = {
+    githubConnector.getRepoContent(repoData.contents_url)
+  }
+
+
 
 }
