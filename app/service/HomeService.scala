@@ -44,8 +44,8 @@ class HomeService @Inject()(githubConnector: GithubConnector){
     }
   }
 
-  def getRepoContent(repoData : RepoData)(implicit ec : ExecutionContext) : Future[List[RepoContent]] = {
-    githubConnector.getRepoContent(repoData.contents_url)
+  def getRepoContent(username: String, repoData : RepoData)(implicit ec : ExecutionContext) : Future[List[RepoContent]] = {
+    githubConnector.getRepoContent(username,repoData.name)
   }
 
 

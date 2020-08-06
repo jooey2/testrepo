@@ -56,7 +56,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, h
     }
     for {
       rd <- repoData
-      repoContent <- homeService.getRepoContent(rd)
+      repoContent <- homeService.getRepoContent(username,rd)
     } yield Ok(views.html.repoDir(rd, repoContent))
   }
 }

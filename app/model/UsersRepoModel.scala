@@ -29,10 +29,9 @@ case class RepoContent(name : String, contentType : String)
 object RepoContent{
   val repoContentReads : Reads[RepoContent] = (
     (__ \ "name").read[String] and
-    (__ \ "type").read[String]
+      (__ \ "type").read[String]
     ) (RepoContent.apply _)
   implicit val format: Format[RepoContent] = Format(repoContentReads,Json.writes[RepoContent])
-
 }
 
 

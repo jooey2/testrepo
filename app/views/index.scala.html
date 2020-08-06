@@ -1,5 +1,5 @@
 @import model.GithubUserModel
-@(githubModel : GithubUserModel)
+@(githubModel : GithubUserModel)(implicit request: RequestHeader)
 
 @main("Welcome to Play") {
   <h1>Welcome to Play!</h1>
@@ -9,7 +9,7 @@
     @githubModel.userInfo.email<p>
     @githubModel.userInfo.location<p>
 
-    @githubModel.usersRepoModel.allRepoData.zip(githubModel.usersRepoModel.commitNs).map{case (a,b) => <p>@{a.name} - @b.toString commit@{ if (b == 1) { "" }  else{ "s" } } }
+  @githubModel.usersRepoModel.allRepoData.zip(githubModel.usersRepoModel.commitNs).map{case (a,b) => <p><a href = "@helper.CSRF(routes.HomeController.repoDir(githubModel.username,a.name))">@{a.name}</a> - @b.toString  commit@{ if (b == 1) { "" }  else{ "s" } } </p>}
  }
 
 

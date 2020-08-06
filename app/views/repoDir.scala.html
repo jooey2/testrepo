@@ -1,7 +1,11 @@
 @import model.{RepoData,RepoContent}
-@(repoData : RepoData, repoContent : List[RepoContent])
+@(repoData : RepoData, repoContents : List[RepoContent])
 
 @main("Welcome to Play") {
 <h1>@repoData.name</h1>
+<h2>directories</h2>
+<p>@repoContents.filter(_.contentType=="dir").map{content => <p>@content.name}
+<h2>files</h2>
+<p>@repoContents.filter(_.contentType=="file").map{content => <p>@content.name}
 
 }

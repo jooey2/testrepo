@@ -30,4 +30,9 @@ ws.url(url).addHttpHeaders(("Authorization", "Basic ZDZmODg4MmM4YjRlMjc5MjAyM2Zi
       .get.map{_.json.as[List[RepoContent]]}
   }
 
+  def getRepoContent(username: String, repoName : String )(implicit  ec : ExecutionContext) : Future [List[RepoContent]] ={
+    ws.url(s"https://api.github.com/repos/$username/$repoName/contents").addHttpHeaders(("Authorization", "Basic ZDZmODg4MmM4YjRlMjc5MjAyM2ZiYmNkNjA1Y2Y5ZTYxYjI5MjIxNA=="))
+      .get.map{_.json.as[List[RepoContent]]}
+  }
+
 }
