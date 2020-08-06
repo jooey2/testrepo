@@ -1,18 +1,13 @@
 package service
 
 import connector.GithubConnector
-import model.{Contributor, GithubUserModel, RepoData, UserInfoModel, UsersRepoModel}
-import org.mockito.{ArgumentMatcher, ArgumentMatchers}
+import model.{Contributor, RepoData, UserInfoModel}
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
 import play.api.test._
 import play.api.test.Helpers._
-import service.HomeService
-import org.mockito.Mockito.{mock, _}
-import play.api.libs.ws.{WSClient, WSRequest}
-import play.api.test.CSRFTokenHelper._
-import scala.concurrent.ExecutionContext.global
+import play.api.libs.ws.WSClient
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -50,7 +45,7 @@ class HomeServiceSpec extends PlaySpec with GuiceOneAppPerTest with MockitoSugar
       val service = new HomeService(connector)
       val data = await(service.getData("joey")(ec))
       data.username mustBe "joey"
-      data.userInfo.fullName mustBe "JoeyC"
+      data.userInfo.name mustBe "JoeyC"
       data.userInfo.location mustBe "Telford"
       data.userInfo.email mustBe "joey.chen@capgemini.com"
       data.usersRepoModel.allRepoData must contain (repo1)

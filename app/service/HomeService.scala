@@ -48,6 +48,16 @@ class HomeService @Inject()(githubConnector: GithubConnector){
     githubConnector.getRepoContent(username,repoData.name)
   }
 
+  def getRepoContent(username: String, repoData : RepoData,path : String)(implicit ec : ExecutionContext) : Future[List[RepoContent]] = {
+    githubConnector.getRepoContent(username,repoData.name,path)
+  }
+
+  def getFile(username: String, repoData : RepoData,path : String)(implicit ec : ExecutionContext) : Future[File] = {
+    githubConnector.getFile(username,repoData.name,path)
+  }
+
+
+
 
 
 }

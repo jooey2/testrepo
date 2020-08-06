@@ -1,7 +1,7 @@
 package connector
 
 import com.google.inject.Inject
-import model.{Contributor, RepoData, UserInfoModel,RepoContent}
+import model.{Contributor, File, RepoContent, RepoData, UserInfoModel}
 import play.api.libs.ws.WSClient
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -34,5 +34,16 @@ ws.url(url).addHttpHeaders(("Authorization", "Basic ZDZmODg4MmM4YjRlMjc5MjAyM2Zi
     ws.url(s"https://api.github.com/repos/$username/$repoName/contents").addHttpHeaders(("Authorization", "Basic ZDZmODg4MmM4YjRlMjc5MjAyM2ZiYmNkNjA1Y2Y5ZTYxYjI5MjIxNA=="))
       .get.map{_.json.as[List[RepoContent]]}
   }
+  def getRepoContent(username : String,repoName : String, path : String )(implicit ec : ExecutionContext) : Future [List[RepoContent]] = {
+    ws.url(s"https://api.github.com/repos/$username/$repoName/contents/$path").addHttpHeaders(("Authorization", "Basic ZDZmODg4MmM4YjRlMjc5MjAyM2ZiYmNkNjA1Y2Y5ZTYxYjI5MjIxNA=="))
+          .get.map{_.json.as[List[RepoContent]]}
+  }
+
+  def getFile(username : String,repoName : String, path : String )(implicit ec : ExecutionContext) : Future [File] = {
+    ws.url(s"https://api.github.com/repos/$username/$repoName/contents/$path").addHttpHeaders(("Authorization", "Basic ZDZmODg4MmM4YjRlMjc5MjAyM2ZiYmNkNjA1Y2Y5ZTYxYjI5MjIxNA=="))
+      .get.map{_.json.as[File]}
+  }
+
+
 
 }

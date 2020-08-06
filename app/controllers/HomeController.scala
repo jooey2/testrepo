@@ -1,16 +1,10 @@
 package controllers
 
 import javax.inject._
-import model.{GithubUserModel, RepoData}
-import play.api._
 import play.api.mvc._
 import service.HomeService
-import model.UsersRepoModel._
 
-import scala.concurrent.{ExecutionContext, Future}
-import play.api.data._
-import play.api.data.Form._
-import play.api.data.Forms._
+import scala.concurrent.ExecutionContext
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
@@ -57,7 +51,31 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, h
     for {
       rd <- repoData
       repoContent <- homeService.getRepoContent(username,rd)
-    } yield Ok(views.html.repoDir(rd, repoContent))
+    } yield Ok(views.html.repoDir(username, rd, repoContent))
+  }
+
+  def repoDir2(username : String, repoName : String, path : String):Action [AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    val repoData = homeService.getRepo(username, repoName).map {
+      case Some(value) => value
+      case None => throw NoSuchRepoException
+    }
+    for {
+      rd <- repoData
+      repoContent <- homeService.getRepoContent(username,rd,path)
+    } yield Ok(views.html.repoDir(username,rd, repoContent))
+  }
+
+
+  def openFile(username: String, repoName : String,path : String ):Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    val repoData = homeService.getRepo(username,repoName).map{
+      case Some(value) => value
+      case None => throw NoSuchRepoException
+    }
+    for{
+      rd<-repoData
+      file <- homeService.getFile(username,rd,path)
+    }yield Ok(views.html.fileContents(username,file))
+
   }
 }
 
