@@ -5,16 +5,18 @@ import connector.GithubConnector
 import model._
 import scala.concurrent.{ExecutionContext, Future}
 
+class RepoDoesNotExistException extends Exception
+
 class HomeService @Inject()(githubConnector: GithubConnector){
 
   def getData(username : String)(implicit ec : ExecutionContext) : Future[GithubUserModel] = {
         for{
-          allRepoData <- getRepo(username)
+          allRepoData <- getUsersRepo(username)
           info <- getInfo(username)
         } yield GithubUserModel(username, allRepoData,info)
       }
 
-  def getRepo (username : String) (implicit ec : ExecutionContext): Future[UsersRepoModel]= {
+  def getUsersRepo (username : String) (implicit ec : ExecutionContext): Future[UsersRepoModel]= {
     for{
       allRepoData <- githubConnector.getUsersRepo(username)
       commitN <- getCommitN(allRepoData)
@@ -35,5 +37,11 @@ class HomeService @Inject()(githubConnector: GithubConnector){
     githubConnector.getUsersInfo(username)
   }
 
+
+  def getRepo(username : String, repoName : String)(implicit ec : ExecutionContext): Future[Option[RepoData]] ={
+    githubConnector.getUsersRepo(username).map{ userRepoData =>
+      userRepoData.find(_.name == repoName)
+    }
+  }
 
 }

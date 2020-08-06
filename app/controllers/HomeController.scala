@@ -1,7 +1,7 @@
 package controllers
 
 import javax.inject._
-import model.GithubUserModel
+import model.{GithubUserModel, RepoData}
 import play.api._
 import play.api.mvc._
 import service.HomeService
@@ -16,6 +16,9 @@ import play.api.data.Forms._
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
  */
+
+class NoSuchRepoException extends Exception
+
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents, homeService : HomeService)(implicit val ec : ExecutionContext) extends BaseController {
 
@@ -39,6 +42,21 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, h
           Ok(views.html.index(data))
         }
   }
+
+  def index2(username : String):Action[AnyContent] = Action.async{implicit request: Request[AnyContent]=>
+    homeService.getData(username).map{data =>
+      Ok(views.html.index(data))
+    }
+  }
+
+  def repoDir(username : String, repoName: String):Action [AnyContent] = Action.async { implicit  request: Request[AnyContent]=>
+    homeService.getRepo(username,repoName).map{
+      case Some(x) => Ok(views.html.repoDir(x))
+      case None => throw new NoSuchRepoException
+    }
+  }
+
+
 
 
 }
