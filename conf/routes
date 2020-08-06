@@ -5,9 +5,8 @@
 
 # An example controller showing a sample home page
 
-GET      /github/users                           controllers.HomeController.formPage()
-POST     /github/users                           controllers.HomeController.index()
-
+GET      /github/users                              controllers.HomeController.formPage()
+POST     /github/users                              controllers.HomeController.index()
 
 
 # Map static resources from the /public folder to the /assets URL path

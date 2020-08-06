@@ -22,6 +22,7 @@ class HomeService @Inject()(githubConnector: GithubConnector){
       yield UsersRepoModel(allRepoData,commitN)
   }
 
+
   def getCommitN (allRepoData: List[RepoData])(implicit ec : ExecutionContext): Future[List[Int]] ={
     Future.sequence(allRepoData.map {repoData =>
       githubConnector.getContributors(repoData.contributors_url).map {
