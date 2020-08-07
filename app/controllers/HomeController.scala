@@ -54,6 +54,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, h
     } yield Ok(views.html.repoDir(username, rd, repoContent))
   }
 
+
   def openDir(username : String, repoName : String, path : String):Action [AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     val repoData = homeService.getRepo(username, repoName).map {
       case Some(value) => value
@@ -62,7 +63,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, h
     for {
       rd <- repoData
       repoContent <- homeService.getDirContent(username,rd,path)
-    } yield Ok(views.html.repoDir(username,rd, repoContent))
+    } yield Ok(views.html.directory(username,rd, repoContent, path))
   }
 
 
@@ -74,7 +75,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, h
     for{
       rd<-repoData
       file <- homeService.getFile(username,rd,path)
-    }yield Ok(views.html.fileContents(username,file))
+    }yield Ok(views.html.fileContents(username,rd,file))
 
   }
 }

@@ -4,6 +4,11 @@
 @main("Welcome to Play") {
   <h1>Welcome to Play!</h1>
 
+
+<form action = "@helper.CSRF(routes.HomeController.formPage())">
+<input type = "submit" value = "Go Back"/>
+</form>
+
     @githubModel.username<p>
     @githubModel.userInfo.name<p>
     @githubModel.userInfo.email<p>
@@ -11,8 +16,3 @@
 
   @githubModel.usersRepoModel.allRepoData.zip(githubModel.usersRepoModel.commitNs).map{case (a,b) => <p><a href = "@helper.CSRF(routes.HomeController.repoDir(githubModel.username,a.name))">@{a.name}</a> - @b.toString  commit@{ if (b == 1) { "" }  else{ "s" } } </p>}
  }
-
-
-
-
-q

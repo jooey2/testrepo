@@ -1,7 +1,14 @@
-@import model.File
-@(username : String, file : File)(implicit request: RequestHeader)
+@import model.{File,RepoData}
+@(username : String,repoData : RepoData, file : File)(implicit request: RequestHeader)
 
 @main("File") {
-<button type = "button" onclick = "history.back()">Go Back</button><br>
+<h1>@file.name</h1>
+
+<p>@file.path</p>>
+<form action = "@{if (!file.path.contains("/")) {helper.CSRF(routes.HomeController.repoDir(username,repoData.name))} else {helper.CSRF(routes.HomeController.openDir(username,repoData.name,file.path.split("/").dropRight(1).foldRight("")(_+"/"+_).dropRight(1)))}}">
+    <input type="submit" value = "Go Back"/>
+</form>
+
+<br>
     @file.decodedContent
 }
