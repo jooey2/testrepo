@@ -3,6 +3,7 @@
 
 @main("Welcome to Play") {
 <h1>@repoData.name</h1>
+<button type = "button" onclick = "history.back()">Go Back</button>
 <h2>directories</h2>
 <p>@repoContents.filter(_.contentType=="dir").map{content => <p><a href = "@helper.CSRF(routes.HomeController.openDir(username,repoData.name,content.path))">@content.name</a></p>}
 <h2>files</h2>

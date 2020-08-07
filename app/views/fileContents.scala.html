@@ -2,5 +2,6 @@
 @(username : String, file : File)(implicit request: RequestHeader)
 
 @main("File") {
+<button type = "button" onclick = "history.back()">Go Back</button><br>
     @file.decodedContent
 }
