@@ -4,7 +4,7 @@
 @main("Welcome to Play") {
 <h1>@repoData.name</h1>
 <h2>directories</h2>
-<p>@repoContents.filter(_.contentType=="dir").map{content => <p><a href = "@helper.CSRF(routes.HomeController.repoDir2(username,repoData.name,content.path))">@content.name</a></p>}
+<p>@repoContents.filter(_.contentType=="dir").map{content => <p><a href = "@helper.CSRF(routes.HomeController.openDir(username,repoData.name,content.path))">@content.name</a></p>}
 <h2>files</h2>
 <p>@repoContents.filter(_.contentType=="file").map{content => <p><a href = "@helper.CSRF(routes.HomeController.openFile(username,repoData.name,content.path))">@content.name</a></p>}
 
