@@ -10,8 +10,9 @@ POST     /github/users                                               controllers
 
 GET      /github/users/:username                                     controllers.HomeController.index2(username)
 GET      /github/users/:username/repos/:repoName                     controllers.HomeController.repoDir(username,repoName)
-GET      /github/users/:username/repos/:repoName/:path               controllers.HomeController.openDir(username,repoName,path)
-GET      /github/users/:username/repos/:repoName/:path/source              controllers.HomeController.openFile(username,repoName,path)
+GET     /github/users/:username/repos/:repoName/source/*path               controllers.HomeController.openFile(username,repoName,path)
+GET      /github/users/:username/repos/:repoName/*path               controllers.HomeController.openDir(username,repoName,path)
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

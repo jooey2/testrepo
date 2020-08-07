@@ -28,6 +28,7 @@ object Contributor{
 case class RepoContent(name : String, contentType : String, path : String)
 
 object RepoContent{
+
   val repoContentReads : Reads[RepoContent] = (
     (__ \ "name").read[String] and
       (__ \ "type").read[String] and
