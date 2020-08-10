@@ -4,7 +4,11 @@
 @main("Welcome to Play") {
 <h1>@repoData.name</h1>
 
-<p>You are here : @path</p>
+<p>You are here :
+    <a href = "@helper.CSRF(routes.HomeController.repoDir(username,repoData.name))">root</a> /
+    @path.split("/").drop(1).foldLeft(List(path.split("/").head))((acc,s) => acc.head +"/"+ s:: acc).reverse.zip(path.split("/")).map{case (p,n) => <a href = "@helper.CSRF(routes.HomeController.openDir(username,repoData.name,p))">@n</a> / }
+</p>
+
 <form action =  "@{if (!path.contains("/")) {helper.CSRF(routes.HomeController.repoDir(username,repoData.name))} else {helper.CSRF(routes.HomeController.openDir(username,repoData.name,path.split("/").dropRight(1).foldRight("")(_+"/"+_).dropRight(1)))}}">
 <input type = "submit" value = "Go Back">
 </form>
