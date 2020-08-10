@@ -56,6 +56,14 @@ class HomeService @Inject()(githubConnector: GithubConnector){
     githubConnector.getFile(username,repoData.name,path)
   }
 
+  def searchUsers(query: String)(implicit ec : ExecutionContext) : Future[SearchUsersModel] = {
+    githubConnector.searchUsers(query)
+  }
+
+  def searchRepos(query: String)(implicit ec : ExecutionContext) : Future[SearchReposModel] = {
+    githubConnector.searchRepos(query)
+  }
+
 
 
 

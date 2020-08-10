@@ -78,6 +78,24 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, h
     }yield Ok(views.html.fileContents(username,rd,file))
 
   }
+
+  def searchUsers():Action[AnyContent] = Action.async {implicit request : Request[AnyContent]=>
+    val query  = request.body.asFormUrlEncoded.map{ args =>
+      args("searchUsername").head
+    }.getOrElse(Redirect(routes.HomeController.formPage())).toString
+    homeService.searchUsers(query).map {data =>
+      Ok(views.html.searchUsersResults(data))
+    }
+  }
+
+  def searchRepos():Action[AnyContent] = Action.async {implicit request : Request[AnyContent]=>
+    val query  = request.body.asFormUrlEncoded.map{ args =>
+      args("searchRepo").head
+    }.getOrElse(Redirect(routes.HomeController.formPage())).toString
+    homeService.searchRepos(query).map {data =>
+      Ok(views.html.searchReposResults(data))
+    }
+  }
 }
 
 

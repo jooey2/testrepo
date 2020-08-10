@@ -1,7 +1,7 @@
 package connector
 
 import com.google.inject.Inject
-import model.{Contributor, File, RepoContent, RepoData, UserInfoModel}
+import model.{Contributor, File, RepoContent, RepoData, SearchReposModel, SearchUsersModel, UserInfoModel}
 import play.api.libs.ws.WSClient
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -44,6 +44,16 @@ ws.url(url).addHttpHeaders(("Authorization", "Basic ZDZmODg4MmM4YjRlMjc5MjAyM2Zi
       .get.map{_.json.as[File]}
   }
 
+  def searchUsers (query : String)(implicit ec : ExecutionContext) : Future [SearchUsersModel] = {
+    ws.url(s"https://api.github.com/search/users?q=$query").addHttpHeaders(("Authorization", "Basic ZDZmODg4MmM4YjRlMjc5MjAyM2ZiYmNkNjA1Y2Y5ZTYxYjI5MjIxNA=="))
+      .get.map{_.json.as[SearchUsersModel]}
+  }
+
+
+  def searchRepos (query : String)(implicit ec : ExecutionContext) : Future [SearchReposModel] = {
+    ws.url(s"https://api.github.com/search/Repositories?q=$query").addHttpHeaders(("Authorization", "Basic ZDZmODg4MmM4YjRlMjc5MjAyM2ZiYmNkNjA1Y2Y5ZTYxYjI5MjIxNA=="))
+      .get.map{_.json.as[SearchReposModel]}
+  }
 
 
 }

@@ -1,0 +1,12 @@
+@import model._
+@(results : SearchReposModel)(implicit request: RequestHeader)
+@main("Navigation") {
+
+<form action = "@helper.CSRF(routes.HomeController.formPage())">
+    <input type="submit" value = "Go Back"/>
+</form>
+
+
+@results.items.map{result => <p><a href = "@helper.CSRF(routes.HomeController.repoDir(result.name,result.getUser))"> @result.full_name @result.getUser @result.name</a>}
+
+}
