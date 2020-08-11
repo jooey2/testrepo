@@ -43,16 +43,14 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, h
     }
   }
 
-  def repoDir(username : String, repoName: String):Action [AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    val repoData = homeService.getRepo(username, repoName).map {
-      case Some(value) => value
-      case None => throw NoSuchRepoException
+
+  def repoDir(username : String, repoName : String) : Action [AnyContent]= Action.async{implicit request : Request[AnyContent] =>
+    homeService.getRepoContent(username,repoName).map { content =>
+      Ok(views.html.repoDir(username, repoName,content))
     }
-    for {
-      rd <- repoData
-      repoContent <- homeService.getRepoContent(username,rd)
-    } yield Ok(views.html.repoDir(username, rd, repoContent))
   }
+
+
 
 
   def openDir(username : String, repoName : String, path : String):Action [AnyContent] = Action.async { implicit request: Request[AnyContent] =>

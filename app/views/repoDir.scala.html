@@ -1,14 +1,13 @@
 @import model.{RepoData,RepoContent}
-@(username : String, repoData : RepoData, repoContents : List[RepoContent])(implicit request: RequestHeader)
-
+@(username : String, repoName : String, repoContents : List[RepoContent])(implicit request: RequestHeader)
 @main("Welcome to Play") {
-<h1>@repoData.name</h1>
+<h1>@repoName</h1>
 <form action = "@helper.CSRF(routes.HomeController.index2(username))">
     <input type="submit" value = "Go Back"/>
 </form>
 <h2>directories</h2>
-<p>@repoContents.filter(_.contentType=="dir").map{content => <p><a href = "@helper.CSRF(routes.HomeController.openDir(username,repoData.name,content.path))">@content.name</a> - @content.path</p>}
+<p>@repoContents.filter(_.contentType=="dir").map{content => <p><a href = "@helper.CSRF(routes.HomeController.openDir(username,repoName,content.path))">@content.name</a> - @content.path</p>}
 <h2>files</h2>
-<p>@repoContents.filter(_.contentType=="file").map{content => <p><a href = "@helper.CSRF(routes.HomeController.openFile(username,repoData.name,content.path))">@content.name</a></p>}
+<p>@repoContents.filter(_.contentType=="file").map{content => <p><a href = "@helper.CSRF(routes.HomeController.openFile(username,repoName,content.path))">@content.name</a></p>}
 
 }

@@ -5,13 +5,13 @@
 
 # An example controller showing a sample home page
 
-GET      /github/users                                               controllers.HomeController.formPage
+GET      /github                                                    controllers.HomeController.formPage
 POST     /github/users                                               controllers.HomeController.index
 
 GET      /github/users/:username                                     controllers.HomeController.index2(username)
-GET      /github/users/:username/repos/:repoName                     controllers.HomeController.repoDir(username,repoName)
-GET     /github/users/:username/repos/:repoName/source/*path               controllers.HomeController.openFile(username,repoName,path)
-GET      /github/users/:username/repos/:repoName/*path               controllers.HomeController.openDir(username,repoName,path)
+GET      /github/:username/repos/:repoName                     controllers.HomeController.repoDir(username,repoName)
+GET     /github/:username/repos/:repoName/source/*path               controllers.HomeController.openFile(username,repoName,path)
+GET      /github/:username/repos/:repoName/*path               controllers.HomeController.openDir(username,repoName,path)
 
 POST    /github/search/users                                        controllers.HomeController.searchUsers
 POST    /github/search/repos                                        controllers.HomeController.searchRepos
