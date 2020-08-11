@@ -9,6 +9,11 @@
     <input type="submit" value = "Go Back"/>
 </form>
 
+<form action = "@helper.CSRF(routes.HomeController.formPage())">
+    <input type = "submit" value = "Go Home"/>
+</form>
+
 <br>
     @file.decodedContent
 }
+

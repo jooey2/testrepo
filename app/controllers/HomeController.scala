@@ -32,48 +32,47 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, h
     val username  = request.body.asFormUrlEncoded.map{ args =>
       args("username").head
     }.getOrElse(Redirect(routes.HomeController.formPage())).toString
-        homeService.getData(username).map {data =>
-          Ok(views.html.index(data))
+        homeService.getData(username).map {
+          case Right(data) => Ok(views.html.index(data))
         }
   }
 
   def index2(username : String):Action[AnyContent] = Action.async{implicit request: Request[AnyContent]=>
-    homeService.getData(username).map{data =>
-      Ok(views.html.index(data))
+    homeService.getData(username).map{
+      case Right(data) => Ok(views.html.index(data))
     }
   }
 
 
   def repoDir(username : String, repoName : String) : Action [AnyContent]= Action.async{implicit request : Request[AnyContent] =>
-    homeService.getRepoContent(username,repoName).map { content =>
-      Ok(views.html.repoDir(username, repoName,content))
+    homeService.getRepoContent(username,repoName).map {
+      case Right(content) =>  Ok(views.html.repoDir(username, repoName,content))
     }
   }
 
-
-
-
   def openDir(username : String, repoName : String, path : String):Action [AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     val repoData = homeService.getRepo(username, repoName).map {
-      case Some(value) => value
-      case None => throw NoSuchRepoException
+      case Right(value) => value
+      case _ => throw NoSuchRepoException
     }
     for {
       rd <- repoData
       repoContent <- homeService.getDirContent(username,rd,path)
-    } yield Ok(views.html.directory(username,rd, repoContent, path))
+    } yield {repoContent match{
+      case Right(repoContent) => Ok(views.html.directory(username,rd, repoContent, path))}}
   }
 
 
   def openFile(username: String, repoName : String,path : String ):Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     val repoData = homeService.getRepo(username,repoName).map{
-      case Some(value) => value
-      case None => throw NoSuchRepoException
+      case Right(value) => value
+      case _ => throw NoSuchRepoException
     }
     for{
       rd<-repoData
       file <- homeService.getFile(username,rd,path)
-    }yield Ok(views.html.fileContents(username,rd,file))
+    }yield {file match{
+      case Right(file) => Ok(views.html.fileContents(username,rd,file))}}
 
   }
 
@@ -81,8 +80,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, h
     val query  = request.body.asFormUrlEncoded.map{ args =>
       args("searchUsername").head
     }.getOrElse(Redirect(routes.HomeController.formPage())).toString
-    homeService.searchUsers(query).map {data =>
-      Ok(views.html.searchUsersResults(data))
+    homeService.searchUsers(query).map {
+      case Right(data) => Ok(views.html.searchUsersResults(data))
     }
   }
 
@@ -90,8 +89,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, h
     val query  = request.body.asFormUrlEncoded.map{ args =>
       args("searchRepo").head
     }.getOrElse(Redirect(routes.HomeController.formPage())).toString
-    homeService.searchRepos(query).map {data =>
-      Ok(views.html.searchReposResults(data))
+    homeService.searchRepos(query).map {
+      case Right(data) => Ok(views.html.searchReposResults(data))
     }
   }
 }

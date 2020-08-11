@@ -12,6 +12,10 @@
 <form action =  "@{if (!path.contains("/")) {helper.CSRF(routes.HomeController.repoDir(username,repoData.name))} else {helper.CSRF(routes.HomeController.openDir(username,repoData.name,path.split("/").dropRight(1).foldRight("")(_+"/"+_).dropRight(1)))}}">
 <input type = "submit" value = "Go Back">
 </form>
+
+<form action = "@helper.CSRF(routes.HomeController.formPage())">
+    <input type = "submit" value = "Go Home"/>
+</form>
 <h2>directories</h2>
 <p>@repoContents.filter(_.contentType=="dir").map{content => <p><a href = "@helper.CSRF(routes.HomeController.openDir(username,repoData.name,content.path))">@content.name</a> }
 <h2>files</h2>
