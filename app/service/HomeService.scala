@@ -67,7 +67,7 @@ class HomeService @Inject()(githubConnector: GithubConnector) {
     githubConnector.getUsersRepo(username).map {
       case Right(userRepoData) => userRepoData.find(_.name == repoName) match {
         case Some(x) => Right(x)
-        case None => Left(new ErrorResponse {})
+        case None => Left(new UserDoesNotExistError)
       }
       case Left(e) => Left(e)
     }

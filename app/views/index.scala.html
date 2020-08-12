@@ -9,10 +9,10 @@
 <input type = "submit" value = "Go Back"/>
 </form>
 
-    @githubModel.username<p>
-    @githubModel.userInfo.name<p>
-    @githubModel.userInfo.email<p>
-    @githubModel.userInfo.location<p>
+    username - @githubModel.username<p>
+    full name - @githubModel.userInfo.name.getOrElse("unknown")<p>
+    email - @githubModel.userInfo.email.getOrElse("null")<p>
+    location - @githubModel.userInfo.location.getOrElse("unknown")<p>
 
   @githubModel.usersRepoModel.allRepoData.zip(githubModel.usersRepoModel.commitNs).map{case (a,b) => <p><a href = "@helper.CSRF(routes.HomeController.repoDir(githubModel.username,a.name))">@{a.name}</a> - @b.toString  commit@{ if (b == 1) { "" }  else{ "s" } } </p>}
  }
